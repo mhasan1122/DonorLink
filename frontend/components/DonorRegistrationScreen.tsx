@@ -100,7 +100,15 @@ function DonorRegistrationScreen() {
   };
 
   const handleChange = (key: string, value: any) => {
-    setForm(f => ({ ...f, [key]: value }));
+    setForm(f => {
+      if (key === "divisionId") {
+        return { ...f, divisionId: value, zilaId: "", upazilaId: "" };
+      }
+      if (key === "zilaId") {
+        return { ...f, zilaId: value, upazilaId: "" };
+      }
+      return { ...f, [key]: value };
+    });
     // Clear error when user starts typing
     if (errors[key]) {
       setErrors(prev => ({ ...prev, [key]: '' }));
@@ -169,7 +177,7 @@ function DonorRegistrationScreen() {
 
       Alert.alert(
         "🎉 Success!",
-        "Welcome to the LifeDonor community! Your registration is complete.",
+        "Welcome to the DonorLink community! Your registration is complete.",
         [
           {
             text: "OK",

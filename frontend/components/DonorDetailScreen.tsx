@@ -11,6 +11,11 @@ function DonorDetailScreen() {
   const [donor, setDonor] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [locationNames, setLocationNames] = useState({
+    divisionName: '',
+    zilaName: '',
+    upazilaName: ''
+  });
 
   useEffect(() => {
     if (!id) return;
@@ -20,6 +25,11 @@ function DonorDetailScreen() {
       try {
         const data = await apiRequest(API_ENDPOINTS.DONOR_BY_ID(id));
         setDonor(data);
+
+        // Fetch location names after getting donor data
+        if (data) {
+          await fetchLocationNames(data.divisionId, data.zilaId, data.upazilaId);
+        }
       } catch (error) {
         console.error('Error fetching donor:', error);
         setError("Donor not found");
@@ -30,6 +40,36 @@ function DonorDetailScreen() {
 
     fetchDonor();
   }, [id]);
+
+  const fetchLocationNames = async (divisionId: number, zilaId: number, upazilaId: number) => {
+    try {
+      // Fetch all divisions to find the division name
+      const divisions = await apiRequest(API_ENDPOINTS.DIVISIONS);
+      const division = divisions.find((d: any) => d.id === divisionId);
+
+      // Fetch zilas for this division to find the zila name
+      const zilas = await apiRequest(API_ENDPOINTS.ZILAS(divisionId));
+      const zila = zilas.find((z: any) => z.id === zilaId);
+
+      // Fetch upazilas for this zila to find the upazila name
+      const upazilas = await apiRequest(API_ENDPOINTS.UPAZILAS(zilaId));
+      const upazila = upazilas.find((u: any) => u.id === upazilaId);
+
+      setLocationNames({
+        divisionName: division?.name || `Division ${divisionId}`,
+        zilaName: zila?.name || `Zila ${zilaId}`,
+        upazilaName: upazila?.name || `Upazila ${upazilaId}`
+      });
+    } catch (error) {
+      console.error('Error fetching location names:', error);
+      // Fallback to showing IDs if names can't be fetched
+      setLocationNames({
+        divisionName: `Division ${divisionId}`,
+        zilaName: `Zila ${zilaId}`,
+        upazilaName: `Upazila ${upazilaId}`
+      });
+    }
+  };
 
   // Helper functions
   const getBloodGroupEmoji = (bloodGroup: string) => {
@@ -227,25 +267,6 @@ function DonorDetailScreen() {
             <Text style={styles.infoLabel}>Phone Number:</Text>
             <Text style={styles.infoValue}>{donor.phoneNumber}</Text>
           </View>
-
-          {/* Contact Action Buttons */}
-          <View style={styles.contactActions}>
-            <TouchableOpacity
-              style={[styles.contactButton, styles.callButton]}
-              onPress={handleCall}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.contactButtonText}>📞 Call</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.contactButton, styles.smsButton]}
-              onPress={handleSMS}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.contactButtonText}>💬 SMS</Text>
-            </TouchableOpacity>
-          </View>
         </Card>
 
         {/* Location Information Card */}
@@ -269,7 +290,7 @@ function DonorDetailScreen() {
           <View style={styles.infoRow}>
             <Text style={styles.infoLabel}>Administrative Area:</Text>
             <Text style={styles.infoValue}>
-              Division: {donor.divisionId} • Zila: {donor.zilaId} • Upazila: {donor.upazilaId}
+              Division: {locationNames.divisionName} • Zila: {locationNames.zilaName} • Upazila: {locationNames.upazilaName}
             </Text>
           </View>
         </Card>
@@ -301,13 +322,13 @@ function DonorDetailScreen() {
       {/* Fixed Bottom Action Buttons */}
       <View style={styles.bottomActions}>
         <Button
-          title="📞 Call Now"
+          title="📞 Call"
           onPress={handleCall}
           variant="primary"
           style={styles.primaryActionButton}
         />
         <Button
-          title="💬 Send Message"
+          title="💬 SMS"
           onPress={handleSMS}
           variant="accent"
           style={styles.secondaryActionButton}

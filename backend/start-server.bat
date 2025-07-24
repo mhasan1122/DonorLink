@@ -1,5 +1,5 @@
 @echo off
-cd /d "f:\work\MY  WORK\LifeDonor\backend"
-echo Starting LifeDonor Backend Server...
+cd /d "f:\work\MY  WORK\DonorLink\backend"
+echo Starting DonorLink Backend Server...
 node index.js
 pause

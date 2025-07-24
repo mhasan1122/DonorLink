@@ -5,6 +5,7 @@ const STORAGE_KEYS = {
   USER_PREFERENCES: 'user_preferences',
   HIGH_CONTRAST_MODE: 'high_contrast_mode',
   LARGE_TEXT_MODE: 'large_text_mode',
+  USER_PROFILE: 'user_profile',
 };
 
 export const storage = {
@@ -61,6 +62,24 @@ export const storage = {
     } catch {
       return false;
     }
+  },
+
+  // User Profile
+  async setUserProfile(profile: any): Promise<void> {
+    await AsyncStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(profile));
+  },
+
+  async getUserProfile(): Promise<any> {
+    try {
+      const value = await AsyncStorage.getItem(STORAGE_KEYS.USER_PROFILE);
+      return value ? JSON.parse(value) : {};
+    } catch {
+      return {};
+    }
+  },
+
+  async clearUserProfile(): Promise<void> {
+    await AsyncStorage.removeItem(STORAGE_KEYS.USER_PROFILE);
   },
 
   // Clear all data

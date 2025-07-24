@@ -1,7 +1,7 @@
 {
-  "name": "lifedonor-backend",
+  "name": "DonorLink-backend",
   "version": "1.0.0",
-  "description": "Backend API for LifeDonor app (Express.js, MySQL)",
+  "description": "Backend API for DonorLink app (Express.js, MySQL)",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

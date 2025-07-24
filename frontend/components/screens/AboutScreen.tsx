@@ -16,7 +16,7 @@ function AboutScreen() {
       <Card style={styles.heroCard}>
         <View style={styles.heroContent}>
           <Text style={styles.heroEmoji}>🩸</Text>
-          <Text style={styles.heroTitle}>LifeDonor</Text>
+          <Text style={styles.heroTitle}>DonorLink</Text>
           <Text style={styles.heroSubtitle}>Connecting Blood Donors & Recipients</Text>
           <Text style={styles.version}>Version 1.0.0</Text>
         </View>
@@ -25,7 +25,7 @@ function AboutScreen() {
       <Card style={styles.missionCard}>
         <Text style={styles.sectionTitle}>Our Mission</Text>
         <Text style={styles.missionText}>
-          LifeDonor is dedicated to saving lives by connecting blood donors with those in need. 
+          DonorLink is dedicated to saving lives by connecting blood donors with those in need. 
           Our platform makes it easy to find nearby donors and register as a life-saving donor.
         </Text>
       </Card>
@@ -84,15 +84,15 @@ function AboutScreen() {
       <Card style={styles.contactCard}>
         <Text style={styles.sectionTitle}>Contact Us</Text>
         <Text style={styles.contactText}>
-          📧 Email: support@lifedonor.app{'\n'}
-          📱 Phone: +880-1234-567890{'\n'}
-          🌐 Website: www.lifedonor.app
+          📧 Email: mirzahasanlimon619@gmail.com{'\n'}
+          📱 Phone: 01623398837{'\n'}
+          🌐 Website: https://mirzahasanlimon.netlify.app/
         </Text>
         
         <Button
           title="Send Feedback"
           variant="accent"
-          onPress={() => Linking.openURL('mailto:support@lifedonor.app')}
+          onPress={() => Linking.openURL('mailto:mirzahasanlimon619@gmail.com')}
           style={styles.contactButton}
         />
       </Card>
@@ -122,7 +122,7 @@ function AboutScreen() {
       <View style={styles.footer}>
         <Text style={styles.footerText}>
           Made with ❤️ for saving lives{'\n'}
-          © 2024 LifeDonor. All rights reserved.
+          © 2024 DonorLink. All rights reserved.
         </Text>
       </View>
     </ScrollView>

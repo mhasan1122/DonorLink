@@ -9,6 +9,7 @@ import ProfileScreen from "./components/screens/ProfileScreen";
 import AboutScreen from "./components/screens/AboutScreen";
 import OnboardingScreen from "./components/onboarding/OnboardingScreen";
 import { storage } from "./utils/storage";
+import { UserProvider } from "./contexts/UserContext";
 
 const Tab = createBottomTabNavigator();
 
@@ -58,57 +59,63 @@ export default function App() {
   }
 
   if (showOnboarding) {
-    return <OnboardingScreen onComplete={handleOnboardingComplete} />;
+    return (
+      <UserProvider>
+        <OnboardingScreen onComplete={handleOnboardingComplete} />
+      </UserProvider>
+    );
   }
 
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="Home"
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name={route.name} />
-          ),
-          tabBarActiveTintColor: '#D32F2F',
-          tabBarInactiveTintColor: '#666666',
-          tabBarStyle: {
-            backgroundColor: '#FFFFFF',
-            borderTopColor: '#E0E0E0',
-            borderTopWidth: 1,
-            paddingTop: 8,
-            paddingBottom: 8,
-            height: 60,
-          },
-          tabBarLabelStyle: {
-            fontSize: 12,
-            fontWeight: '600',
-            marginTop: 4,
-          },
-          headerShown: false,
-        })}
-      >
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ title: 'Find Donors' }}
-        />
-        <Tab.Screen
-          name="Register"
-          component={RegisterScreen}
-          options={{ title: 'Become Donor' }}
-        />
-        <Tab.Screen
-          name="Profile"
-          component={ProfileScreen}
-          options={{ title: 'My Profile' }}
-        />
-        <Tab.Screen
-          name="About"
-          component={AboutScreen}
-          options={{ title: 'About & Help' }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <UserProvider>
+      <NavigationContainer>
+        <Tab.Navigator
+          initialRouteName="Home"
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused }) => (
+              <TabBarIcon focused={focused} name={route.name} />
+            ),
+            tabBarActiveTintColor: '#D32F2F',
+            tabBarInactiveTintColor: '#666666',
+            tabBarStyle: {
+              backgroundColor: '#FFFFFF',
+              borderTopColor: '#E0E0E0',
+              borderTopWidth: 1,
+              paddingTop: 8,
+              paddingBottom: 8,
+              height: 60,
+            },
+            tabBarLabelStyle: {
+              fontSize: 12,
+              fontWeight: '600',
+              marginTop: 4,
+            },
+            headerShown: false,
+          })}
+        >
+          <Tab.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ title: 'Find Donors' }}
+          />
+          <Tab.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={{ title: 'Become Donor' }}
+          />
+          <Tab.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{ title: 'My Profile' }}
+          />
+          <Tab.Screen
+            name="About"
+            component={AboutScreen}
+            options={{ title: 'About & Help' }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </UserProvider>
   );
 }
 

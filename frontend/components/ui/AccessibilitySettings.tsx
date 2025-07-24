@@ -112,7 +112,7 @@ export default function AccessibilitySettings({
 
         <ScrollView style={styles.content}>
           <Card style={styles.introCard}>
-            <Text style={styles.introTitle}>♿ Make LifeDonor Work Better for You</Text>
+            <Text style={styles.introTitle}>♿ Make DonorLink Work Better for You</Text>
             <Text style={styles.introText}>
               Customize the app to meet your accessibility needs. These settings will be saved 
               and applied across the entire app.

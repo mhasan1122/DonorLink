@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, StyleSheet, RefreshControl, Modal } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import type { NavigationProp } from "@react-navigation/native";
 import { Button, LoadingSpinner, SearchBar, FilterModal } from "./ui";
 import DonorCard from "./ui/DonorCard";
 import { API_ENDPOINTS, apiRequest } from "../config/api";
+
+type HomeStackParamList = {
+  DonorList: undefined;
+  DonorDetail: { id: number };
+};
+
+type HomeStackNavigationProp = NavigationProp<HomeStackParamList>;
 
 interface Donor {
   id: number;
@@ -32,7 +40,7 @@ function DonorListScreen() {
     availableOnly: false,
     lastDonationWithin: 365,
   });
-  const navigation = useNavigation();
+  const navigation = useNavigation<HomeStackNavigationProp>();
 
   useEffect(() => {
     fetchDonors();
@@ -167,7 +175,7 @@ function DonorListScreen() {
           renderItem={({ item }) => (
             <DonorCard
               donor={item}
-              onPress={() => navigation.navigate("DonorDetail" as never, { id: item.id } as never)}
+              onPress={() => navigation.navigate("DonorDetail", { id: item.id })}
             />
           )}
           refreshControl={
