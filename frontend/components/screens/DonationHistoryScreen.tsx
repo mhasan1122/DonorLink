@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, FlatList, Alert, Platform } from 'react-native';
 import { Card, Button, LoadingSpinner } from '../ui';
 import * as Print from 'expo-print';
+import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 
 interface DonationRecord {
@@ -80,6 +81,7 @@ function DonationHistoryScreen() {
     setIsGeneratingPDF(true);
 
     try {
+
       const currentDate = new Date().toLocaleDateString('en-GB');
       const currentTime = new Date().toLocaleTimeString('en-GB');
 
@@ -324,30 +326,43 @@ function DonationHistoryScreen() {
       // Add a small delay to ensure the PDF is fully generated
       await new Promise(resolve => setTimeout(resolve, 500));
 
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const filename = `blood-donation-report-${timestamp}.pdf`;
+
       if (Platform.OS === 'web') {
-        // For web, open the print dialog (user can save as PDF)
-        await Print.printAsync({ html: htmlContent });
-        Alert.alert('Tip', 'Use the print dialog to save as PDF.');
+        // For web, create a download link and trigger download
+        const link = document.createElement('a');
+        link.href = uri;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        Alert.alert('✅ Download Complete!', `PDF downloaded to your Downloads folder!\n\n📄 File: ${filename}`);
       } else {
-        // For mobile platforms, use sharing which acts as download
+        // For mobile platforms, use sharing to allow user to save the PDF
         if (await Sharing.isAvailableAsync()) {
           await Sharing.shareAsync(uri, {
             mimeType: 'application/pdf',
-            dialogTitle: 'your blood donation history',
+            dialogTitle: 'Save Blood Donation Report',
             UTI: 'com.adobe.pdf',
           });
-          Alert.alert('Success', 'PDF downloaded successfully!');
+
+          Alert.alert(
+            '✅ Download Complete!',
+            `Your blood donation report is ready!\n\n📄 File: ${filename}\n\nChoose "Save to Files" or "Downloads" from the share menu to save it to your device.`,
+            [{ text: 'OK' }]
+          );
         } else {
-          Alert.alert('Error', 'Download not available on this device.');
+          Alert.alert(
+            '❌ Download Error',
+            'Unable to download PDF on this device. Please try again or contact support.',
+            [{ text: 'OK' }]
+          );
         }
       }
     } catch (error) {
       console.error('Error generating PDF:', error);
-      if (error instanceof Error && error.message && error.message.includes('Another share request')) {
-        Alert.alert('Please wait', 'Another sharing operation is in progress. Please try again in a moment.');
-      } else {
-        Alert.alert('Error', 'Failed to generate PDF report. Please try again.');
-      }
+      Alert.alert('Download Error', 'Failed to generate or download PDF report. Please try again.');
     } finally {
       setIsGeneratingPDF(false);
     }

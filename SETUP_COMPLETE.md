@@ -15,7 +15,7 @@ The network request errors have been resolved! The API integration is now fully 
 - ✅ Fixed database connection pool configuration
 - ✅ Removed invalid MySQL2 connection options
 - ✅ Added proper error handling and logging
-- ✅ Server now runs successfully on port 5000
+- ✅ Server now runs successfully on port 3001 (port 5000 was occupied by macOS Control Center)
 
 ### 3. Frontend API Integration
 - ✅ Created centralized API configuration (`frontend/config/api.js`)
@@ -40,8 +40,8 @@ The network request errors have been resolved! The API integration is now fully 
 ### Backend Server
 1. Open a terminal in the `backend` directory
 2. Run: `node index.js`
-3. Server will start on `http://localhost:5000`
-4. You should see: "Database connected successfully" and "Server running on port 5000"
+3. Server will start on `http://localhost:3001`
+4. You should see: "Database connected successfully" and "Server running on port 3001"
 
 ### Frontend App
 1. Open a terminal in the `frontend` directory
@@ -55,16 +55,16 @@ The network request errors have been resolved! The API integration is now fully 
 
 ## API Configuration
 The API base URL is configured in `frontend/config/api.js`:
-- Base URL: `http://localhost:5000/api`
+- Base URL: `http://192.168.0.107:3001/api` (machine IP for React Native/Expo)
 - Timeout: 10 seconds
 - Enhanced error handling with user-friendly messages
 
 ## Testing the API
 You can test the API endpoints using curl:
 ```bash
-curl http://localhost:5000/api/health
-curl http://localhost:5000/api/divisions
-curl http://localhost:5000/api/donors
+curl http://localhost:3001/api/health
+curl http://localhost:3001/api/divisions
+curl http://localhost:3001/api/donors
 ```
 
 ## Files Created/Modified

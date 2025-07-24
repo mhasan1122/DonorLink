@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, ActivityIndicator } from "react-native";
+import { apiRequest, API_ENDPOINTS } from "../config/api";
 
 function HealthCheckScreen() {
   const [status, setStatus] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/health")
-      .then(res => res.json())
+    apiRequest(API_ENDPOINTS.HEALTH)
       .then(data => setStatus(data.status))
       .catch(() => setStatus("error"))
       .finally(() => setLoading(false));

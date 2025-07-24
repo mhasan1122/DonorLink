@@ -1,8 +1,8 @@
 // API Configuration
 const API_CONFIG = {
   // Base URL for the backend API
-  // Use machine IP address instead of localhost for React Native/Expo development
-  BASE_URL: 'http://192.168.0.185:5000/api',
+  // Use machine IP address for React Native/Expo development (mobile simulator needs real IP)
+  BASE_URL: 'http://192.168.0.107:3001/api',
   
   // Timeout for API requests (in milliseconds)
   TIMEOUT: 10000,

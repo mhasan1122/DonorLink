@@ -15,13 +15,21 @@ const Tab = createBottomTabNavigator();
 
 function TabBarIcon({ focused, name }: { focused: boolean; name: string }) {
   const icons = {
-    Home: focused ? '🏠' : '🏡',
-    Register: focused ? '📝' : '📄',
-    Profile: focused ? '👤' : '👥',
-    About: focused ? 'ℹ️' : 'ⓘ',
+    Home: '🏠',
+    Register: '📝',
+    Profile: '👤',
+    About: 'ℹ️',
   };
 
-  return <Text style={{ fontSize: 20 }}>{icons[name as keyof typeof icons]}</Text>;
+  return (
+    <Text style={{
+      fontSize: 20,
+      opacity: focused ? 1 : 0.6,
+      transform: [{ scale: focused ? 1.1 : 1 }]
+    }}>
+      {icons[name as keyof typeof icons]}
+    </Text>
+  );
 }
 
 export default function App() {
@@ -75,20 +83,32 @@ export default function App() {
             tabBarIcon: ({ focused }) => (
               <TabBarIcon focused={focused} name={route.name} />
             ),
+            tabBarIconStyle: {
+              marginTop: 2,
+            },
             tabBarActiveTintColor: '#D32F2F',
             tabBarInactiveTintColor: '#666666',
             tabBarStyle: {
               backgroundColor: '#FFFFFF',
               borderTopColor: '#E0E0E0',
               borderTopWidth: 1,
-              paddingTop: 8,
-              paddingBottom: 8,
-              height: 60,
+              paddingTop: 10,
+              paddingBottom: 10,
+              height: 65,
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: -2,
+              },
+              shadowOpacity: 0.1,
+              shadowRadius: 3,
+              elevation: 5,
             },
             tabBarLabelStyle: {
-              fontSize: 12,
+              fontSize: 11,
               fontWeight: '600',
-              marginTop: 4,
+              marginTop: 2,
+              marginBottom: 2,
             },
             headerShown: false,
           })}
